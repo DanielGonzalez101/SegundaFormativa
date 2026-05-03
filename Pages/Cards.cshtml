@@ -1,0 +1,153 @@
+@page
+@model FormativaWeb.Pages.CardsModel
+@{
+    ViewData["Title"] = "Cards con Repeater";
+    int i = 0;
+}
+
+<h2 class="section-title mb-2">¿Qué son las Cards y cómo se usan con el Repeater?</h2>
+<p class="text-muted mb-4">
+    Las <strong>Cards (tarjetas)</strong> son componentes visuales de Bootstrap que muestran información de forma organizada y atractiva.
+    El Repeater es ideal para generarlas porque tú controlas el 100% del HTML de cada tarjeta.
+</p>
+
+<!-- EXPLICACIÓN -->
+<div class="row g-4 mb-5">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm p-4 h-100">
+            <h5 class="fw-bold text-success mb-3">🃏 ¿Qué es una Card?</h5>
+            <p>Una <strong>card</strong> es un contenedor flexible que incluye:</p>
+            <ul class="mb-0">
+                <li>Un <strong>encabezado</strong> o imagen</li>
+                <li>Un <strong>cuerpo</strong> con título y descripción</li>
+                <li>Un <strong>pie</strong> con precio o acciones</li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm p-4 h-100">
+            <h5 class="fw-bold text-success mb-3">🔗 ¿Por qué Repeater + Cards?</h5>
+            <ul class="mb-0">
+                <li>El Repeater <strong>no genera HTML propio</strong> — tú decides qué va en cada tarjeta</li>
+                <li>Con <code>ItemTemplate</code> y <code>AlternatingItemTemplate</code> puedes dar estilos distintos a tarjetas alternas</li>
+                <li><code>HeaderTemplate</code> abre el contenedor de tarjetas</li>
+                <li><code>FooterTemplate</code> lo cierra y muestra el resumen</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- HeaderTemplate: abre el row de Bootstrap que contendrá las cards  -->
+<!-- ================================================================ -->
+<div class="rounded-top-3 p-3 text-white" style="background:linear-gradient(135deg,#1a73e8,#0d47a1);">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <span class="badge bg-light text-dark me-2" style="font-size:0.65rem;">HeaderTemplate</span>
+            <strong class="fs-5">Catálogo de Productos Tecnológicos</strong>
+        </div>
+        <span class="badge bg-warning text-dark">@Model.Productos.Count productos</span>
+    </div>
+    <p class="mb-0 mt-1 small opacity-75">Mostrando todos los productos disponibles</p>
+</div>
+
+<div class="row g-4 p-3 mb-0" style="background:#f8f9fa;">
+
+    @* ================================================================ *@
+    @* ItemTemplate y AlternatingItemTemplate: una card por producto     *@
+    @* ================================================================ *@
+    @foreach (var producto in Model.Productos)
+    {
+        if (i % 2 == 0)
+        {
+            @* ItemTemplate — card blanca para registros impares *@
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow" style="border-radius:16px; transition:transform .2s;"
+                     onmouseover="this.style.transform='translateY(-6px)'"
+                     onmouseout="this.style.transform='translateY(0)'">
+                    <div class="text-center pt-4 pb-2">
+                        <span style="font-size:3rem;">@producto.Icono</span><br />
+                        <span class="badge bg-primary mt-1">@producto.Categoria</span><br />
+                        <span class="badge bg-primary mt-1" style="font-size:0.6rem;">ItemTemplate</span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">@producto.Nombre</h5>
+                        <p class="card-text text-muted small">@producto.Descripcion</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-center pb-3">
+                        <span class="text-success fw-bold fs-5">$@producto.Precio.ToString("N0")</span>
+                        <button type="button" class="btn btn-primary btn-sm">Ver más</button>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            @* AlternatingItemTemplate — card con degradado para registros pares *@
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow" style="border-radius:16px; background:linear-gradient(135deg,#e3f2fd,#f3e5f5); transition:transform .2s;"
+                     onmouseover="this.style.transform='translateY(-6px)'"
+                     onmouseout="this.style.transform='translateY(0)'">
+                    <div class="text-center pt-4 pb-2">
+                        <span style="font-size:3rem;">@producto.Icono</span><br />
+                        <span class="badge bg-info text-dark mt-1">@producto.Categoria</span><br />
+                        <span class="badge mt-1" style="background:#0dcaf0;color:#000;font-size:0.6rem;">AlternatingItemTemplate</span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">@producto.Nombre</h5>
+                        <p class="card-text text-muted small">@producto.Descripcion</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-center pb-3">
+                        <span class="text-success fw-bold fs-5">$@producto.Precio.ToString("N0")</span>
+                        <button type="button" class="btn btn-info btn-sm text-dark">Ver más</button>
+                    </div>
+                </div>
+            </div>
+        }
+        i++;
+    }
+
+</div>
+
+@* ================================================================ *@
+@* FooterTemplate: cierra el contenedor y muestra el resumen        *@
+@* ================================================================ *@
+<div class="rounded-bottom-3 p-3 text-white mb-4" style="background:linear-gradient(135deg,#198754,#145a32);">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <span class="badge bg-light text-dark me-2" style="font-size:0.65rem;">FooterTemplate</span>
+            <strong>Fin del catálogo</strong>
+        </div>
+        <span class="small opacity-75">Total: @Model.Productos.Count productos · Precios en COP</span>
+    </div>
+</div>
+
+<!-- CÓDIGO DE REFERENCIA -->
+<div class="card border-0 shadow-sm p-4 mt-2">
+    <h5 class="fw-bold mb-3">🔍 Estructura del Repeater para Cards</h5>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <h6 class="text-success">Flujo de renderizado</h6>
+            <ol class="small">
+                <li><strong>HeaderTemplate</strong>: Abre el <code>&lt;div class="row"&gt;</code> del grid Bootstrap</li>
+                <li><strong>ItemTemplate</strong>: Card blanca para registros en posición impar</li>
+                <li><strong>AlternatingItemTemplate</strong>: Card con degradado para posición par</li>
+                <li><strong>FooterTemplate</strong>: Cierra el <code>&lt;/div&gt;</code> y muestra el resumen</li>
+            </ol>
+        </div>
+        <div class="col-md-6">
+            <h6 class="text-success">PageModel — Cards.cshtml.cs</h6>
+            <pre class="bg-dark text-light p-3 rounded small"><code>public class CardsModel : PageModel
+{
+    public List&lt;Producto&gt; Productos
+        { get; set; } = [];
+
+    public void OnGet()
+    {
+        Productos = DatosProductos
+            .ObtenerProductos();
+    }
+}</code></pre>
+        </div>
+    </div>
+</div>

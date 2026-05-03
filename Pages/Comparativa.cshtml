@@ -1,0 +1,194 @@
+@page
+@model FormativaWeb.Pages.ComparativaModel
+@{
+    ViewData["Title"] = "Comparativa";
+    int i = 0;
+}
+
+<h2 class="section-title mb-2">Comparativa: GridView vs ListView vs Repeater</h2>
+<p class="text-muted mb-5">Los tres son controles de enlace a datos en ASP.NET Web Forms, pero con diferencias clave en flexibilidad, peso y funcionalidad.</p>
+
+<!-- TARJETAS RESUMEN -->
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="card border-0 shadow h-100" style="border-top:4px solid #0d6efd;">
+            <div class="card-header text-white fw-bold" style="background:#0d6efd;">🗂️ GridView</div>
+            <div class="card-body">
+                <p>Genera automáticamente una tabla HTML. El programador no escribe nada del HTML de la tabla.</p>
+                <h6 class="text-success">✅ Ventajas</h6>
+                <ul class="small">
+                    <li>Paginación integrada sin código</li>
+                    <li>Ordenamiento automático por columna</li>
+                    <li>Edición y eliminación automática</li>
+                    <li>Implementación muy rápida</li>
+                </ul>
+                <h6 class="text-danger">❌ Desventajas</h6>
+                <ul class="small mb-0">
+                    <li>HTML pesado, difícil de personalizar</li>
+                    <li>Poco control visual</li>
+                    <li>ViewState grande</li>
+                </ul>
+            </div>
+            <div class="card-footer bg-light small"><strong>Ideal para:</strong> CRUD rápido, paneles de administración.</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow h-100" style="border-top:4px solid #fd7e14;">
+            <div class="card-header text-white fw-bold" style="background:#fd7e14;">📃 ListView</div>
+            <div class="card-body">
+                <p>Más flexible que GridView. Permite plantillas y soporta paginación con <code>DataPager</code>.</p>
+                <h6 class="text-success">✅ Ventajas</h6>
+                <ul class="small">
+                    <li>Control del HTML con plantillas</li>
+                    <li>Paginación con DataPager</li>
+                    <li>Soporta inserción, edición y eliminación</li>
+                    <li>Punto medio entre Repeater y GridView</li>
+                </ul>
+                <h6 class="text-danger">❌ Desventajas</h6>
+                <ul class="small mb-0">
+                    <li>Más complejo de configurar</li>
+                    <li>Más pesado que el Repeater</li>
+                    <li>Más plantillas obligatorias</li>
+                </ul>
+            </div>
+            <div class="card-footer bg-light small"><strong>Ideal para:</strong> Listados con paginación y diseño propio.</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow h-100 border-success border-2" style="border-top:4px solid #198754;">
+            <div class="card-header text-white fw-bold" style="background:#198754;">🔄 Repeater ⭐</div>
+            <div class="card-body">
+                <p>El más <strong>ligero y flexible</strong>. Defines el 100% del HTML. No genera nada automáticamente.</p>
+                <h6 class="text-success">✅ Ventajas</h6>
+                <ul class="small">
+                    <li>Control total del HTML generado</li>
+                    <li>El más liviano (mínimo ViewState)</li>
+                    <li>Perfecto para cards y diseños libres</li>
+                    <li>Funciona con cualquier estructura HTML</li>
+                </ul>
+                <h6 class="text-danger">❌ Desventajas</h6>
+                <ul class="small mb-0">
+                    <li>Sin paginación automática</li>
+                    <li>Sin edición/eliminación integrada</li>
+                    <li>Requiere más código C#</li>
+                </ul>
+            </div>
+            <div class="card-footer bg-light small"><strong>Ideal para:</strong> Catálogos, cards, listas personalizadas.</div>
+        </div>
+    </div>
+</div>
+
+<!-- TABLA COMPARATIVA DETALLADA -->
+<h4 class="fw-bold mb-4">📊 Tabla Comparativa Detallada</h4>
+<div class="table-responsive mb-5">
+    <table class="table table-bordered text-center shadow-sm">
+        <thead>
+            <tr style="background:#212529; color:white;">
+                <th class="text-start ps-3" style="width:28%;">Característica</th>
+                <th><span class="badge bg-primary fs-6 px-3">🗂️ GridView</span></th>
+                <th><span class="badge fs-6 px-3" style="background:#fd7e14;">📃 ListView</span></th>
+                <th><span class="badge bg-success fs-6 px-3">🔄 Repeater</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-start ps-3 fw-semibold">Control del HTML</td>
+                <td class="table-primary">✗ HTML automático</td>
+                <td class="table-warning">◑ Con plantillas</td>
+                <td class="table-success">✓ Control total</td>
+            </tr>
+            <tr class="table-light">
+                <td class="text-start ps-3 fw-semibold">Paginación</td>
+                <td class="table-success">✓ Automática</td>
+                <td class="table-success">✓ Con DataPager</td>
+                <td class="table-danger">✗ Manual</td>
+            </tr>
+            <tr>
+                <td class="text-start ps-3 fw-semibold">Ordenamiento automático</td>
+                <td class="table-success">✓ Por columna</td>
+                <td class="table-danger">✗ No</td>
+                <td class="table-danger">✗ No</td>
+            </tr>
+            <tr class="table-light">
+                <td class="text-start ps-3 fw-semibold">Edición / Eliminación integrada</td>
+                <td class="table-success">✓ Automática</td>
+                <td class="table-success">✓ Con plantillas</td>
+                <td class="table-danger">✗ No</td>
+            </tr>
+            <tr>
+                <td class="text-start ps-3 fw-semibold">Peso / Rendimiento</td>
+                <td class="table-danger">✗ Más pesado</td>
+                <td class="table-warning">◑ Medio</td>
+                <td class="table-success">✓ Más ligero</td>
+            </tr>
+            <tr class="table-light">
+                <td class="text-start ps-3 fw-semibold">ViewState generado</td>
+                <td class="table-danger">✗ Grande</td>
+                <td class="table-warning">◑ Medio</td>
+                <td class="table-success">✓ Mínimo</td>
+            </tr>
+            <tr>
+                <td class="text-start ps-3 fw-semibold">Diseño libre (Cards, listas)</td>
+                <td class="table-danger">✗ Limitado</td>
+                <td class="table-warning">◑ Parcial</td>
+                <td class="table-success">✓ Ideal</td>
+            </tr>
+            <tr class="table-light">
+                <td class="text-start ps-3 fw-semibold">Facilidad de uso</td>
+                <td class="table-success">✓ Muy fácil</td>
+                <td class="table-warning">◑ Media</td>
+                <td class="table-warning">◑ Requiere HTML</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- COMPARATIVA USANDO EL PROPIO REPEATER (foreach) -->
+<h4 class="fw-bold mb-3">🔄 Esta tabla fue generada con el patrón Repeater</h4>
+<p class="text-muted small mb-3">Demostración de que el Repeater puede generar cualquier estructura HTML, incluyendo esta misma tabla comparativa:</p>
+
+<span class="badge bg-dark mb-1">▼ HeaderTemplate</span>
+<table class="table table-bordered shadow-sm">
+    <thead class="table-dark">
+        <tr>
+            <th>Característica</th>
+            <th>Valor</th>
+            <th>Control recomendado</th>
+            <th>Plantilla usada</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var fila in Model.FilasComparativa)
+        {
+            if (i % 2 == 0)
+            {
+                <tr style="background:#ffffff;">
+                    <td class="fw-semibold">@fila.Caracteristica</td>
+                    <td>@fila.Valor</td>
+                    <td><span class="badge bg-@fila.ColorBadge">@fila.Control</span></td>
+                    <td><span class="badge bg-primary" style="font-size:0.6rem;">ItemTemplate</span></td>
+                </tr>
+            }
+            else
+            {
+                <tr style="background:#cfe2ff;">
+                    <td class="fw-semibold">@fila.Caracteristica</td>
+                    <td>@fila.Valor</td>
+                    <td><span class="badge bg-@fila.ColorBadge">@fila.Control</span></td>
+                    <td><span class="badge" style="background:#0dcaf0;color:#000;font-size:0.6rem;">AlternatingItemTemplate</span></td>
+                </tr>
+            }
+            i++;
+        }
+    </tbody>
+    <tfoot>
+        <tr style="background:#198754; color:white;">
+            <td colspan="3" class="py-2">
+                <span class="badge bg-light text-dark me-2" style="font-size:0.65rem;">FooterTemplate</span>
+                Total de casos comparados
+            </td>
+            <td class="fw-bold">@Model.FilasComparativa.Count filas</td>
+        </tr>
+    </tfoot>
+</table>
+<span class="badge bg-success mb-4 d-block">▲ FooterTemplate</span>

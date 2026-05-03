@@ -1,0 +1,181 @@
+@page
+@model FormativaWeb.Pages.RepeaterModel
+@{
+    ViewData["Title"] = "Repeater - Todas las Plantillas";
+    int i = 0;
+}
+
+<h2 class="section-title mb-2">Repeater — Las 4 Plantillas en Acción</h2>
+<p class="text-muted mb-4">
+    Cada sección de la tabla corresponde a una plantilla del Repeater.
+    Los colores permiten identificar visualmente qué plantilla renderiza cada parte.
+</p>
+
+<!-- LEYENDA -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-lg-3">
+        <div class="rounded-3 p-3 text-white" style="background:#212529;">
+            <span class="badge bg-light text-dark mb-1">HeaderTemplate</span>
+            <p class="mb-0 small">Se renderiza <strong>una vez</strong> al inicio. Abre la tabla y sus encabezados.</p>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="rounded-3 p-3" style="background:#dbeafe;">
+            <span class="badge bg-primary mb-1">ItemTemplate</span>
+            <p class="mb-0 small">Por cada registro <strong>impar</strong> (1°, 3°, 5°...). Fondo blanco.</p>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="rounded-3 p-3" style="background:#cfe2ff;">
+            <span class="badge mb-1" style="background:#0dcaf0;color:#000;">AlternatingItemTemplate</span>
+            <p class="mb-0 small">Por cada registro <strong>par</strong> (2°, 4°, 6°...). Fondo azul claro.</p>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="rounded-3 p-3" style="background:#d1e7dd;">
+            <span class="badge bg-success mb-1">FooterTemplate</span>
+            <p class="mb-0 small">Se renderiza <strong>una vez</strong> al final. Muestra el resumen.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- INICIO: HeaderTemplate                                             -->
+<!-- Se ejecuta UNA VEZ antes del foreach. Abre <table> y encabezados  -->
+<!-- ================================================================ -->
+<span class="badge bg-dark mb-1">▼ HeaderTemplate</span>
+<table class="table table-bordered shadow-sm" style="border-radius:10px; overflow:hidden;">
+    <thead>
+        <tr style="background:#212529; color:white;">
+            <th colspan="6" class="text-center py-2">
+                <span class="badge bg-light text-dark me-2" style="font-size:0.7rem;">HeaderTemplate</span>
+                Catálogo de Productos Tecnológicos
+            </th>
+        </tr>
+        <tr style="background:#343a40; color:white;">
+            <th class="text-center" style="width:50px;">#</th>
+            <th style="width:50px;">Icono</th>
+            <th>Producto</th>
+            <th>Categoría</th>
+            <th class="text-end">Precio</th>
+            <th>Descripción</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @* ============================================================= *@
+        @* ITEM y ALTERNATING ITEM TEMPLATE                               *@
+        @* @foreach recorre cada registro y alterna el estilo por índice  *@
+        @* ============================================================= *@
+        @foreach (var producto in Model.Productos)
+        {
+            if (i % 2 == 0)
+            {
+                @* ---- ItemTemplate: registros en posición impar (0,2,4) ---- *@
+                <tr style="background:#ffffff;">
+                    <td class="text-center fw-bold text-primary">@producto.Id</td>
+                    <td class="text-center fs-4">@producto.Icono</td>
+                    <td>
+                        <strong>@producto.Nombre</strong><br />
+                        <span class="badge bg-primary" style="font-size:0.6rem;">ItemTemplate</span>
+                    </td>
+                    <td><span class="badge bg-primary">@producto.Categoria</span></td>
+                    <td class="text-end text-success fw-bold">$@producto.Precio.ToString("N0")</td>
+                    <td class="text-muted small">@producto.Descripcion</td>
+                </tr>
+            }
+            else
+            {
+                @* ---- AlternatingItemTemplate: registros en posición par (1,3,5) ---- *@
+                <tr style="background:#cfe2ff;">
+                    <td class="text-center fw-bold text-primary">@producto.Id</td>
+                    <td class="text-center fs-4">@producto.Icono</td>
+                    <td>
+                        <strong>@producto.Nombre</strong><br />
+                        <span class="badge" style="background:#0dcaf0;color:#000;font-size:0.6rem;">AlternatingItemTemplate</span>
+                    </td>
+                    <td><span class="badge bg-info text-dark">@producto.Categoria</span></td>
+                    <td class="text-end text-success fw-bold">$@producto.Precio.ToString("N0")</td>
+                    <td class="text-muted small">@producto.Descripcion</td>
+                </tr>
+            }
+            i++;
+        }
+
+    </tbody>
+
+    @* ================================================================ *@
+    @* FooterTemplate: se ejecuta UNA VEZ al final, cierra la tabla     *@
+    @* ================================================================ *@
+    <tfoot>
+        <tr style="background:#198754; color:white;">
+            <td colspan="4" class="py-2">
+                <span class="badge bg-light text-dark me-2" style="font-size:0.7rem;">FooterTemplate</span>
+                <strong>Resumen del catálogo</strong>
+            </td>
+            <td class="text-end fw-bold">@Model.Productos.Count productos</td>
+            <td><small>Precios en COP</small></td>
+        </tr>
+    </tfoot>
+</table>
+<span class="badge bg-success mb-4 d-block">▲ FooterTemplate</span>
+
+<!-- EXPLICACIÓN DEL CÓDIGO -->
+<div class="card border-0 shadow-sm p-4 mt-2">
+    <h5 class="fw-bold mb-3">🔍 ¿Cómo se simulan las plantillas en Razor Pages?</h5>
+    <div class="row g-4">
+        <div class="col-md-6">
+            <h6 class="text-primary">Vista — Repeater.cshtml</h6>
+            <pre class="bg-dark text-light p-3 rounded" style="font-size:0.75rem;"><code>@@* HeaderTemplate *@@
+&lt;table&gt;
+  &lt;thead&gt; ... &lt;/thead&gt;
+  &lt;tbody&gt;
+
+    @@foreach (var p in Model.Productos)
+    {
+      if (i % 2 == 0)
+      {
+        @@* ItemTemplate *@@
+        &lt;tr style="background:white"&gt;
+          &lt;td&gt;@@p.Nombre&lt;/td&gt;
+        &lt;/tr&gt;
+      }
+      else
+      {
+        @@* AlternatingItemTemplate *@@
+        &lt;tr style="background:#cfe2ff"&gt;
+          &lt;td&gt;@@p.Nombre&lt;/td&gt;
+        &lt;/tr&gt;
+      }
+      i++;
+    }
+
+  &lt;/tbody&gt;
+  &lt;tfoot&gt; @@* FooterTemplate *@@ &lt;/tfoot&gt;
+&lt;/table&gt;</code></pre>
+        </div>
+        <div class="col-md-6">
+            <h6 class="text-primary">PageModel — Repeater.cshtml.cs</h6>
+            <pre class="bg-dark text-light p-3 rounded" style="font-size:0.75rem;"><code>public class RepeaterModel : PageModel
+{
+    // Equivale al DataSource del Repeater
+    public List&lt;Producto&gt; Productos
+        { get; set; } = [];
+
+    public void OnGet()
+    {
+        // En Web Forms sería:
+        // rpt.DataSource = lista;
+        // rpt.DataBind(); ← OBLIGATORIO
+        //
+        // En Razor Pages solo asignamos:
+        Productos = DatosProductos
+            .ObtenerProductos();
+    }
+}</code></pre>
+            <div class="alert alert-info mt-3 small mb-0">
+                <strong>Diferencia clave:</strong> En Web Forms debes llamar <code>DataBind()</code> manualmente o los datos no aparecen. En Razor Pages simplemente asignas la lista a la propiedad del PageModel.
+            </div>
+        </div>
+    </div>
+</div>
